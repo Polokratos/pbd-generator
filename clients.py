@@ -26,7 +26,7 @@ def clients(amt:int):
         else: #indywiduel
             individuel.append([
                 i+1, #ID
-                names[random.randint(0,len(names-1))], #imie
+                names[random.randint(0,len(names)-1)], #imie
                 "nazwisko"+str(i+1) #nazwisko
             ])
     return (clients,individuel,company)
