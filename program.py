@@ -1,11 +1,12 @@
 from clients        import *
 from menu           import *
-from tables         import  *
-from warehouse      import  *
+from tables         import *
+from warehouse      import *
 from globals        import *
 from reservation    import *
 from orders         import *
 from orderDetails   import *
+from discountVars   import *
 
 from datetime import datetime
 
@@ -32,5 +33,6 @@ Globals = globals(0,datetime.today())
 Orders = orders(20,50,datetime.today(),0,Reservation,[i[0] for i in Client_Individuals])
 OrderDetails = orderDetails([i[0] for i in Orders],[i[0] for i in Warehouse])
 
+DiscountVars = discountVars(0,0,datetime.today())
 
 
