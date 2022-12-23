@@ -1,9 +1,11 @@
-from clients    import *
-from menu       import *
-from tables     import  *
-from warehouse  import  *
-from globals    import *
-from reservation import *
+from clients        import *
+from menu           import *
+from tables         import  *
+from warehouse      import  *
+from globals        import *
+from reservation    import *
+from orders         import *
+from orderDetails   import *
 
 from datetime import datetime
 
@@ -17,20 +19,18 @@ def query(table:str, records:list[list[any]]):
     retval = retval.replace(']',')')
     return retval
 
-#Replace 0 with the amount of needed records.
-(Clients,Client_Individuals,Companies) = clients(100)
-Tables = tables(10)
+#Replace a 0 with the amount of needed records.
+(Clients,Client_Individuals,Companies) = clients(0)
+Tables = tables(0)
 Warehouse = warehouse(0)
 Menu = menu(0,datetime.today(),len(Warehouse))
 Globals = globals(0,datetime.today())
-(Reservation,ReservationDetails) = reservation(10,20,10,datetime.today(),
+(Reservation,ReservationDetails) = reservation(10,20,0,datetime.today(),
                                                [i[0] for i in Client_Individuals],
                                                [i[0] for i in Companies],
                                                [i[0] for i in Tables])
+Orders = orders(20,50,datetime.today(),0,Reservation,[i[0] for i in Client_Individuals])
+OrderDetails = orderDetails([i[0] for i in Orders],[i[0] for i in Warehouse])
 
-for i in Reservation:
-    print(i)
-print("-----------------------------------------------------")
-for i in ReservationDetails:
-    print(i)
+
 
