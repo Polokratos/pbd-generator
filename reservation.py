@@ -6,7 +6,8 @@ def reservation(dailyLOW:int,
                 days:int,
                 startDay:datetime.date,
                 individuelID:list[int],
-                companyID:list[int]
+                companyID:list[int],
+                tableID:list[int]
                 ):
     if(dailyLOW>dailyHIGH): #sanity check
         dailyHIGH,dailyLOW = dailyLOW,dailyHIGH
@@ -33,6 +34,8 @@ def reservation(dailyLOW:int,
             startTime = startDay + datetime.timedelta(hours=random.randint(8,15),minutes=random.randint(0,59)) 
             endTime = startTime + datetime.timedelta(hours=random.randint(0,2),minutes=30*random.randint(0,1))
             
+            # FIXME: Dobre miejsce na wpisanie kodu dla ReesrvationClient / ReesrvationCompany.
+            
             res = [
                 reservationIndex, #ID
                 client, #ClientID
@@ -45,7 +48,6 @@ def reservation(dailyLOW:int,
 
             
             #Znaleźć jakiś stolik dla res jeśli ma to sens. (efektywnie udawanie SQLa w Pythonie)
-            # FIXME: Daje tylko stoliki 'NULL' bo nie ma jak ściągnąć danych o stolikach bruh moment.s
             
             #Najpierw znaleźć wszystkie ID rezerwacji które nie mogą być na tym samym stoliku.
             isForbidding = lambda reservation: not canHaveSameTable(reservation, res) #funkcja filtrująca.
@@ -56,10 +58,16 @@ def reservation(dailyLOW:int,
             
             
             # Teraz znaleźć wszystkie ID wolnych stolików.
-            isAvalible = lambda detail: detail[1] not in forbidding_reservationIDs # funkcja filtrująca.
-            avalible_Tables = [i for i in reservation_details_in_day] # Bierzemy wszystkie stoliki
-            filter(isAvalible,avalible_Tables) # fultrujemy do tych które są wolne
-            avalible_Tables = [i[2] for i in avalible_Tables] # bierzemy tylko ID
+            #Najpierw znajdujemy wszystkie ID zajętych stolików.
+            isForbidden = lambda detail: detail[1] in forbidding_reservationIDs # funkcja filtrująca.
+            forbidden_Tables = [i for i in reservation_details_in_day] # Bierzemy wszystkie stoliki
+            filter(isForbidden,forbidden_Tables) # fultrujemy do tych które są wolne
+            forbidden_Tables = [i[2] for i in forbidden_Tables] # bierzemy tylko ID
+            
+            #Bierzemy wszystkie stoliki poza zajętymi.
+            isAvalible = lambda table: table not in forbidden_Tables
+            avalible_Tables = [i for i in tableID]
+            filter(isAvalible,avalible_Tables)
             
             #Faktyczne dodwawanie do ReservationDetails.
             if(len(avalible_Tables)>1 and random.randint(0,100) < 5 ): #Jeżeli sie uda to 5% rezerwacji jest na dwa stoliki
@@ -71,9 +79,9 @@ def reservation(dailyLOW:int,
                 reservation_details_in_day.append([
                     DetailIndex,
                     res[0],
-                    avalible_Tables[-1] #Ostatni. Można losować, ale nie chce mi się tłuc z randomInt(1,1) bo to może sypać błędy.
+                    forbidden_Tables[-1] #Ostatni. Można losować, ale nie chce mi się tłuc z randomInt(1,1) bo to może sypać błędy.
                 ]);DetailIndex+=1
-            else:
+            else: # 1 albo 0 wolnych stolików na ten timeslot.
                 avalible_Tables.append("NULL") # Dołóżny rezerwacje bez stolika.
                 avalible_Tables.append("NULL") # Trochę więcej rezerwacji bez stolika.
                 reservation_details_in_day.append([

@@ -19,13 +19,14 @@ def query(table:str, records:list[list[any]]):
 
 #Replace 0 with the amount of needed records.
 (Clients,Client_Individuals,Companies) = clients(100)
-Tables = tables(0)
+Tables = tables(10)
 Warehouse = warehouse(0)
 Menu = menu(0,datetime.today(),len(Warehouse))
 Globals = globals(0,datetime.today())
 (Reservation,ReservationDetails) = reservation(10,20,10,datetime.today(),
                                                [i[0] for i in Client_Individuals],
-                                               [i[0] for i in Companies])
+                                               [i[0] for i in Companies],
+                                               [i[0] for i in Tables])
 
 for i in Reservation:
     print(i)

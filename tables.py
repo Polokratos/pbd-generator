@@ -6,3 +6,4 @@ def tables(amt:int) -> list[list]:
             i+1, #TableID
             random.randint(0,2) + random.randint(1,4) # seats
         ])
+    return retval
