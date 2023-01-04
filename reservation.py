@@ -15,6 +15,8 @@ def reservation(dailyLOW:int,
     
     reservation = []
     reservation_details = []
+    reservationClients = []
+    reservationCompanies = []
     
     daily = [random.randint(dailyLOW,dailyHIGH) for i in range(days)]
     cday = startDay
@@ -35,6 +37,13 @@ def reservation(dailyLOW:int,
             endTime = startTime + datetime.timedelta(hours=random.randint(0,2),minutes=30*random.randint(0,1))
             
             # FIXME: Dobre miejsce na wpisanie kodu dla ReesrvationClient / ReesrvationCompany.
+            
+            if(client in individuelID):
+                reservationClients.append([reservationIndex,client,"null"])
+            elif random.randint(0,100) < 5:
+                reservationCompanies.append([reservationIndex,client,individuelID[random.randint(0,len(individuelID)-1)]])
+            else:
+                reservationCompanies.append([reservationIndex,client,"null"])
             
             res = [
                 reservationIndex, #ID
@@ -79,7 +88,7 @@ def reservation(dailyLOW:int,
                 reservation_details_in_day.append([
                     DetailIndex,
                     res[0],
-                    forbidden_Tables[-1] #Ostatni. Można losować, ale nie chce mi się tłuc z randomInt(1,1) bo to może sypać błędy.
+                    avalible_Tables[-1] #Ostatni. Można losować, ale nie chce mi się tłuc z randomInt(1,1) bo to może sypać błędy.
                 ]);DetailIndex+=1
             else: # 1 albo 0 wolnych stolików na ten timeslot.
                 avalible_Tables.append("NULL") # Dołóżny rezerwacje bez stolika.
@@ -95,7 +104,7 @@ def reservation(dailyLOW:int,
         for i in reservation_details_in_day:
             reservation_details.append(i)
         cday = cday + datetime.timedelta(days=1)
-    return (reservation,reservation_details)
+    return (reservation,reservation_details,reservationClients,reservationCompanies)
 
 
 # Can reservation be seated at the same table as context?

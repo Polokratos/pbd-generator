@@ -27,7 +27,7 @@ def orders(dailyLOW:int,
                 index, #ID
                 "NULL", #ReservationID
                 individuelID[random.randint(0,len(individuelID)-1)], #random individual client (ClientID)
-                formatDate(days + datetime.timedelta(days=day)),
+                formatDate(startDate + datetime.timedelta(days=day)),
                 takeaway, #takeaway
                 paid # paid
             ]);index+=1
@@ -63,15 +63,17 @@ def orders(dailyLOW:int,
             else: # Firma zamawia na pracownika
                 retval.append([
                     index,
+                    res[reservationIDIndex],
                     individuelID[random.randint(0,len(individuelID)-1)], #random individual client (ClientID)
                     formatDate(res[DateIndex]),
                     False, #Takeaway
                     True #Paid
                 ]);index+=1
             #Oprócz zamówienia głównego:
-            if(random.randint(0,100) < 5) # 5% szans że firma złoży ekstra zamówienie na pracownika.
+            if(random.randint(0,100) < 5): # 5% szans że firma złoży ekstra zamówienie na pracownika.
                 retval.append([
                     index,
+                    res[reservationIDIndex],
                     individuelID[random.randint(0,len(individuelID)-1)], #random individual client (ClientID)
                     formatDate(res[DateIndex]),
                     False, #Takeaway

@@ -25,7 +25,7 @@ def discountVars(amt1: int, amt2:int, startDate: datetime.date):
         retval.append([
             index, #VarID
             2, #DiscountID (Z1)
-            "Z@", #VarName
+            "Z2", #VarName
             random.randint(0,10), #Value
             heplers.formatDate(cdate), #StartDate
             heplers.formatDate(edate) #EndDate
