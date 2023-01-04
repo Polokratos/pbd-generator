@@ -1,5 +1,6 @@
 import random
 import datetime
+import heplers
 
 def reservation(dailyLOW:int,
                 dailyHIGH:int,
@@ -49,8 +50,8 @@ def reservation(dailyLOW:int,
                 reservationIndex, #ID
                 client, #ClientID
                 applied, #reservationApplied
-                startTime, # startDate
-                endTime # endDate
+                heplers.formatDateTime(startTime), # startDate
+                heplers.formatDateTime(endTime) # endDate
             ]
             reservation_in_day.append(res)
             reservationIndex+=1
@@ -89,14 +90,6 @@ def reservation(dailyLOW:int,
                     DetailIndex,
                     res[0],
                     avalible_Tables[-1] #Ostatni. Można losować, ale nie chce mi się tłuc z randomInt(1,1) bo to może sypać błędy.
-                ]);DetailIndex+=1
-            else: # 1 albo 0 wolnych stolików na ten timeslot.
-                avalible_Tables.append("NULL") # Dołóżny rezerwacje bez stolika.
-                avalible_Tables.append("NULL") # Trochę więcej rezerwacji bez stolika.
-                reservation_details_in_day.append([
-                    DetailIndex,
-                    res[0],
-                    avalible_Tables[random.randint(0,len(avalible_Tables)-1)]
                 ]);DetailIndex+=1
             
         for i in reservation_in_day:

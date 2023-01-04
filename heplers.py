@@ -2,10 +2,10 @@ import datetime
 import random
 
 def formatDate(tf:datetime)->str:
-    return str(tf.year) +'-'+str(tf.month)+'-'+str(tf.day)
+    return str(tf)
 
 def formatDateTime(tf:datetime)->str:
-    return formatDate(tf)+' ' + tf.time.hour+':'+tf.time.minute+' '+tf.time.second
+    return str(tf)
 
 def getUniqueRandomElements(list:list,amt:int)->list:
     retval = []
